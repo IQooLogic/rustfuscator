@@ -1,0 +1,19 @@
+[package]
+name = "rustfuscator"
+version = "1.0.0"
+edition = "2024"
+description = "A text obfuscation library using AES-GCM encryption"
+authors = ["Milos Stojkovic <iqoologic@gmail.com>"]
+license = "MIT"
+repository = "https://github.com/IQooLogic/rustfuscator"
+readme = "README.md"
+keywords = ["obfuscation", "encryption", "security", "crypto"]
+categories = ["cryptography", "authentication"]
+
+[dependencies]
+base64 = "0.22.1"
+pbkdf2 = "0.12.2"
+rand = "0.9.1"
+sha2 = "0.10.9"
+thiserror = "2.0.12"
+aes-gcm = "0.10.3"
