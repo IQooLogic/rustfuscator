@@ -58,7 +58,7 @@ rustfuscator = "1.0.0"
 ## Usage
 
 ```rust
-use obfuscator::Obfuscator;
+use rustfuscator::Obfuscator;
 
 fn main() {
     // Create an obfuscator with a passphrase
@@ -77,7 +77,7 @@ fn main() {
 ### Advanced Usage
 
 ```rust
-use obfuscator::Obfuscator;
+use rustfuscator::Obfuscator;
 
 fn main() {
     // Create an obfuscator with custom configuration
