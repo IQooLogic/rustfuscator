@@ -12,8 +12,8 @@ categories = ["cryptography", "authentication"]
 
 [dependencies]
 base64 = "0.22.1"
-pbkdf2 = "0.12.2"
-rand = "0.9.1"
-sha2 = "0.10.9"
-thiserror = "2.0.12"
-aes-gcm = "0.10.3"
+pbkdf2 = "0.13.0"
+rand = "0.10.2"
+sha2 = "0.11.0"
+thiserror = "2.0.18"
+aes-gcm = "0.11.0"

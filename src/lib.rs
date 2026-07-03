@@ -33,8 +33,8 @@ use aes_gcm::{
 };
 use base64::{engine::general_purpose::STANDARD, Engine};
 use pbkdf2::pbkdf2_hmac;
-use rand::rngs::OsRng;
-use rand::TryRngCore;
+use rand::rngs::SysRng;
+use rand::TryRng;
 use sha2::Sha256;
 use thiserror::Error;
 
@@ -255,10 +255,11 @@ impl Obfuscator {
         let cipher = Aes256Gcm::new_from_slice(&key)
             .map_err(|e| ObfuscatorError::EncryptionError(e.to_string()))?;
 
-        let nonce = Nonce::from_slice(&iv);
+        let nonce = Nonce::try_from(iv.as_slice())
+            .map_err(|e| ObfuscatorError::EncryptionError(e.to_string()))?;
 
         let obfuscated_bytes = cipher
-            .decrypt(nonce, cipher_text.as_ref())
+            .decrypt(&nonce, cipher_text.as_ref())
             .map_err(ObfuscatorError::from)?;
 
         Ok(obfuscated_bytes)
@@ -268,10 +269,11 @@ impl Obfuscator {
         let cipher = Aes256Gcm::new_from_slice(key)
             .map_err(|e| ObfuscatorError::EncryptionError(e.to_string()))?;
 
-        let nonce = Nonce::from_slice(iv);
+        let nonce = Nonce::try_from(iv)
+            .map_err(|e| ObfuscatorError::EncryptionError(e.to_string()))?;
 
         let sealed = cipher
-            .encrypt(nonce, text.as_bytes())
+            .encrypt(&nonce, text.as_bytes())
             .map_err(|e| ObfuscatorError::EncryptionError(e.to_string()))?;
 
         Ok(sealed)
@@ -279,7 +281,7 @@ impl Obfuscator {
 
     fn generate_salt(&self, length: u8) -> Result<Vec<u8>, ObfuscatorError> {
         let mut salt = vec![0u8; length as usize];
-        OsRng
+        SysRng
             .try_fill_bytes(&mut salt)
             .map_err(|e| ObfuscatorError::RandomError(e.to_string()))?;
         Ok(salt)
@@ -293,7 +295,7 @@ impl Obfuscator {
 
     fn gen_crypto_key(&self) -> Result<Vec<u8>, ObfuscatorError> {
         let mut iv = vec![0u8; 12]; // 12 bytes for GCM nonce
-        OsRng
+        SysRng
             .try_fill_bytes(&mut iv)
             .map_err(|e| ObfuscatorError::RandomError(e.to_string()))?;
         Ok(iv)
