@@ -52,7 +52,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-rustfuscator = "1.0.0"
+rustfuscator = "1.1.0"
 ```
 
 ## Usage
